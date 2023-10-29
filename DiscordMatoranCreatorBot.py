@@ -30,10 +30,13 @@ async def matoran(ctx, torsoC, footC, eyesC, maskC, maskName):
         return
     #create matoran image, save it so it can get uploaded and then delete it, also add to cooldown:
     matoranImg = generateMatoran(torsoC, footC, eyesC, maskC, maskName)
-    savePath = "matoran/"+createdAt.now().strftime("%y_%m_%d_%H_%M_%S")+"_"+str(authorID)+".png"
+    cooldowns[authorID] = createdAt
+    saveDir = "matoran/"
+    if not os.path.exists(saveDir):
+        os.makedirs(saveDir)
+    savePath = saveDir+createdAt.now().strftime("%y_%m_%d_%H_%M_%S")+"_"+str(authorID)+".png"
     matoranImg.save(savePath)
     await ctx.send(file=discord.File(savePath))
-    cooldowns[authorID] = createdAt
     os.remove(savePath)
 
 #key goes here
